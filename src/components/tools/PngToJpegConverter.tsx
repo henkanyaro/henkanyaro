@@ -184,21 +184,63 @@ export default function PngToJpegConverter() {
     }
   };
 
-  const downloadFile = (file: ConvertedFile) => {
+  const saveFile = async (file: ConvertedFile) => {
     if (!file.jpegUrl) return;
     const baseName = file.originalName.replace(/\.[^.]+$/, "");
+    const fileName = `${baseName}.jpg`;
+
+    // モバイルではWeb Share APIでギャラリー/写真に直接保存
+    if (navigator.share && navigator.canShare) {
+      try {
+        const res = await fetch(file.jpegUrl);
+        const blob = await res.blob();
+        const shareFile = new File([blob], fileName, { type: "image/jpeg" });
+        if (navigator.canShare({ files: [shareFile] })) {
+          await navigator.share({ files: [shareFile], title: fileName });
+          return;
+        }
+      } catch (err) {
+        // ユーザーがキャンセルした場合はそのまま終了
+        if (err instanceof Error && err.name === "AbortError") return;
+        // その他のエラーは通常ダウンロードにフォールバック
+      }
+    }
+
+    // PC・非対応環境は通常ダウンロード
     const a = document.createElement("a");
     a.href = file.jpegUrl;
-    a.download = `${baseName}.jpg`;
+    a.download = fileName;
     a.click();
   };
 
   const downloadAll = async () => {
     const doneFiles = files.filter((f) => f.status === "done" && f.jpegUrl);
+
+    // Web Share APIが複数ファイルに対応している場合は一括共有
+    if (navigator.share && navigator.canShare) {
+      try {
+        const shareFiles = await Promise.all(
+          doneFiles.map(async (f) => {
+            const baseName = f.originalName.replace(/\.[^.]+$/, "");
+            const res = await fetch(f.jpegUrl!);
+            const blob = await res.blob();
+            return new File([blob], `${baseName}.jpg`, { type: "image/jpeg" });
+          })
+        );
+        if (navigator.canShare({ files: shareFiles })) {
+          await navigator.share({ files: shareFiles });
+          return;
+        }
+      } catch (err) {
+        if (err instanceof Error && err.name === "AbortError") return;
+      }
+    }
+
+    // フォールバック：順番にダウンロード
     for (let i = 0; i < doneFiles.length; i++) {
       await new Promise<void>((resolve) => {
         setTimeout(() => {
-          downloadFile(doneFiles[i]);
+          saveFile(doneFiles[i]);
           resolve();
         }, i * 300);
       });
@@ -399,11 +441,11 @@ export default function PngToJpegConverter() {
                   )}
                   {file.status === "done" && (
                     <button
-                      onClick={() => downloadFile(file)}
+                      onClick={() => saveFile(file)}
                       className="flex items-center gap-1 px-3 py-2 rounded-lg bg-accent text-white text-xs font-semibold hover:bg-accent-hover active:scale-95 transition-all min-h-[44px] min-w-[44px] justify-center"
-                      aria-label={`${file.originalName} をダウンロード`}
+                      aria-label={`${file.originalName} を保存`}
                     >
-                      DL
+                      保存
                     </button>
                   )}
                   <button
