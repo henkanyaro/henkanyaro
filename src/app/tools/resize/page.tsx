@@ -1,25 +1,25 @@
 import type { Metadata } from "next";
 import AdBanner from "@/components/AdBanner";
-import ResizeConverter from "@/components/tools/ResizeConverter";
+import StitchConverter from "@/components/tools/StitchConverter";
 
 export const metadata: Metadata = {
-  title: "一括リサイズ野郎 — 複数画像をまとめてリサイズ",
+  title: "コマ結合野郎 — インスタコマをX投稿用に縦結合",
   description:
-    "PNG・JPEG・WebPなど複数の画像を一括でリサイズ。Instagram・X・Facebookなどのプリセット付き。ブラウザ完結、無料、サーバー不要。",
+    "インスタグラム用のコマ画像を2〜3枚縦につなげてX（Twitter）投稿用画像を作成。ブラウザ完結、無料、サーバー不要。",
   alternates: { canonical: "/tools/resize" },
   openGraph: {
-    title: "一括リサイズ野郎 — 複数画像をまとめてリサイズ",
+    title: "コマ結合野郎 — インスタコマをX投稿用に縦結合",
     description:
-      "SNS向けプリセット付き。複数画像を一括リサイズ。ブラウザ完結・無料・サーバー不要。",
+      "インスタ用コマを2〜3枚縦結合してX投稿用画像を作成。ブラウザ完結・無料。",
   },
   twitter: {
     card: "summary_large_image",
-    title: "一括リサイズ野郎",
-    description: "複数画像を一括リサイズ。Instagram・X・Facebookプリセット付き。",
+    title: "コマ結合野郎",
+    description: "インスタコマをX投稿用に縦結合。ブラウザ完結・無料。",
   },
 };
 
-export default function ResizePage() {
+export default function StitchPage() {
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10">
       {/* ページヘッダー */}
@@ -29,24 +29,24 @@ export default function ResizePage() {
             変換野郎
           </a>
           <span>/</span>
-          <span>一括リサイズ野郎</span>
+          <span>コマ結合野郎</span>
         </div>
         <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-foreground mb-2">
-          一括リサイズ<span className="text-accent">野郎</span>
+          コマ結合<span className="text-accent">野郎</span>
         </h1>
         <p className="text-muted text-sm sm:text-base">
-          複数の画像を一括でリサイズ。SNS向けプリセットとカスタムサイズに対応。
+          インスタグラム用のコマ画像を2〜3枚縦につなげて、X投稿用の画像を作成します。
         </p>
       </div>
 
       {/* ヘッダー下広告 */}
-      <AdBanner slot="resize-header" className="mb-8" />
+      <AdBanner slot="stitch-header" className="mb-8" />
 
-      {/* リサイズツール本体 */}
-      <ResizeConverter />
+      {/* コマ結合ツール本体 */}
+      <StitchConverter />
 
-      {/* 変換後広告 */}
-      <AdBanner slot="resize-post" className="mt-10" />
+      {/* 結合後広告 */}
+      <AdBanner slot="stitch-post" className="mt-10" />
 
       {/* 使い方説明 */}
       <section className="mt-12 space-y-4">
@@ -56,14 +56,16 @@ export default function ResizePage() {
             <span className="shrink-0 w-6 h-6 rounded-full bg-accent text-white flex items-center justify-center text-xs font-bold">
               1
             </span>
-            <span>サイズプリセットを選ぶか、カスタムで幅・高さを入力します。</span>
+            <span>
+              1投稿あたりのコマ数（2枚 or 3枚）を選び、インスタ用のコマ画像をドロップまたは選択します。
+            </span>
           </li>
           <li className="flex gap-3">
             <span className="shrink-0 w-6 h-6 rounded-full bg-accent text-white flex items-center justify-center text-xs font-bold">
               2
             </span>
             <span>
-              「比率維持」はアスペクト比を保ったまま内側に収め、余白を指定色で塗ります。「ストレッチ」は強制的に引き伸ばします。
+              ▲▼ボタンでコマの順番を調整します。自動でグループ分け（投稿1・投稿2…）が表示されます。
             </span>
           </li>
           <li className="flex gap-3">
@@ -71,7 +73,7 @@ export default function ResizePage() {
               3
             </span>
             <span>
-              画像をドロップまたはファイル選択すると自動でリサイズされます。「保存」または「すべて保存」でダウンロード。
+              「投稿用画像を作成」ボタンを押すと縦結合された画像が生成されます。各投稿ごとに「保存」、または「すべて保存」で一括保存。
             </span>
           </li>
         </ol>

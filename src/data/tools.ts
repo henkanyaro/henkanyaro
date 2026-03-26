@@ -20,11 +20,11 @@ export const tools: Tool[] = [
   },
   {
     id: "resize",
-    name: "一括リサイズ野郎",
+    name: "コマ結合野郎",
     description:
-      "複数の画像を指定サイズ・比率で一括リサイズ。SNS投稿・バナー制作に最適。",
+      "インスタ用コマを2〜3枚縦につなげてX投稿用画像を作成。並び替え・一括保存対応。",
     href: "/tools/resize",
     available: true,
-    emoji: "📐",
+    emoji: "🔗",
   },
 ];
