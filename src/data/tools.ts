@@ -24,8 +24,7 @@ export const tools: Tool[] = [
     description:
       "複数の画像を指定サイズ・比率で一括リサイズ。SNS投稿・バナー制作に最適。",
     href: "/tools/resize",
-    available: false,
-    badge: "近日公開",
+    available: true,
     emoji: "📐",
   },
 ];
