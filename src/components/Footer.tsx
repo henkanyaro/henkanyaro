@@ -13,6 +13,9 @@ export default function Footer() {
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted">
           <p>© {new Date().getFullYear()} 変換野郎</p>
           <div className="flex gap-4">
+            <a href="/contact" className="hover:text-foreground transition-colors">
+              お問い合わせ
+            </a>
             <a href="/privacy" className="hover:text-foreground transition-colors">
               プライバシーポリシー
             </a>

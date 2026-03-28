@@ -17,6 +17,12 @@ export default function Header() {
           >
             ツール一覧
           </Link>
+          <Link
+            href="/contact"
+            className="text-sm text-muted hover:text-foreground transition-colors"
+          >
+            お問い合わせ
+          </Link>
         </nav>
       </div>
     </header>
