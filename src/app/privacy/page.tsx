@@ -4,7 +4,13 @@ export const metadata: Metadata = {
   title: "プライバシーポリシー",
   description:
     "変換野郎のプライバシーポリシーです。広告配信・アクセス解析・免責事項についてご説明します。",
-  alternates: { canonical: "/privacy" },
+  alternates: {
+    canonical: "/privacy",
+    languages: {
+      ja: "/privacy",
+      en: "/en/privacy",
+    },
+  },
 };
 
 export default function PrivacyPage() {

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 export default function Header() {
   return (
@@ -23,6 +24,7 @@ export default function Header() {
           >
             お問い合わせ
           </Link>
+          <LanguageSwitcher />
         </nav>
       </div>
     </header>

@@ -6,7 +6,13 @@ export const metadata: Metadata = {
   title: "一括JPEG変換野郎 — PNGをまとめてJPEGに変換",
   description:
     "PNG・WebP・GIFなど複数の画像を一括でJPEGに変換。ブラウザ完結、無料、サーバー不要。品質・背景色も自由に設定可能。",
-  alternates: { canonical: "/tools/png-to-jpeg" },
+  alternates: {
+    canonical: "/tools/png-to-jpeg",
+    languages: {
+      ja: "/tools/png-to-jpeg",
+      en: "/en/tools/png-to-jpeg",
+    },
+  },
   openGraph: {
     title: "一括JPEG変換野郎 — PNGをまとめてJPEGに変換",
     description:
