@@ -56,7 +56,7 @@ export default function StitchPageEn() {
       <AdBanner slot="stitch-header" className="mb-8" />
 
       {/* Tool */}
-      <StitchConverter />
+      <StitchConverter locale="en" />
 
       {/* Post-convert ad */}
       <AdBanner slot="stitch-post" className="mt-10" />

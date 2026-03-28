@@ -32,7 +32,8 @@ function generateCaption(
   index: number,
   total: number,
   prefix: string,
-  fmt: CaptionFormat
+  fmt: CaptionFormat,
+  locale: "ja" | "en" = "ja"
 ): string {
   let numbering: string;
   switch (fmt) {
@@ -40,7 +41,7 @@ function generateCaption(
       numbering = `(${index}/${total})`;
       break;
     case "N枚目/T枚":
-      numbering = `${index}枚目/${total}枚`;
+      numbering = locale === "en" ? `${index} of ${total}` : `${index}枚目/${total}枚`;
       break;
     default:
       numbering = `${index}/${total}`;
@@ -157,7 +158,86 @@ async function stitchPanels(
   });
 }
 
-export default function StitchConverter() {
+export default function StitchConverter({ locale = "ja" }: { locale?: "ja" | "en" }) {
+  const t = locale === "en" ? {
+    combineCount: "Frames to stitch",
+    frameN: (n: number) => `${n}`,
+    outputFormat: "Output format",
+    bgColor: "Background color",
+    quality: (q: number) => `Quality (${q}%)`,
+    dropTitle: "Drag & drop frame images",
+    dropSub: "Multiple files OK · Reorder after uploading",
+    selectBtn: "Select frames",
+    dropAriaLabel: "Select or drop frame images",
+    panelList: (count: number, fileCount: number) =>
+      `Frames  (${count} → split into ${fileCount} files)`,
+    clear: "Clear",
+    fileLabel: (n: number) => `File ${n}`,
+    processing: "Stitching…",
+    createFiles: (n: number) => `Create ${n} ${n === 1 ? "file" : "files"}`,
+    doneLabel: (files: number, posts: number) =>
+      posts >= 2 ? `Done — ${files} files / ${posts} posts` : `Done — ${files} files`,
+    saveAll: "Save all",
+    captionTitle: "X post captions",
+    prefixLabel: "Prefix (optional)",
+    prefixPlaceholder: "Title, hashtags, etc. (optional)",
+    formatLabel: "Format",
+    captionFormats: [
+      { value: "N/T" as CaptionFormat, label: "1/3" },
+      { value: "(N/T)" as CaptionFormat, label: "(1/3)" },
+      { value: "N枚目/T枚" as CaptionFormat, label: "1 of 3" },
+    ],
+    postLabel: (n: number, count: number) => `Post ${n} (${count})`,
+    copy: "Copy",
+    copied: "✓",
+    copyAll: "Copy all captions",
+    copiedAll: "✓ Copied",
+    postHeader: (n: number, count: number) => `Post ${n} (${count} attached)`,
+    frameRange: (s: number, e: number) => `Frames ${s}–${e}`,
+    save: "Save",
+    imageAlt: (n: number) => `File ${n}`,
+    splitHere: "Split here",
+    merge: "↕ Merge",
+  } : {
+    combineCount: "結合するコマ数",
+    frameN: (n: number) => `${n}枚`,
+    outputFormat: "出力形式",
+    bgColor: "余白色",
+    quality: (q: number) => `品質 (${q}%)`,
+    dropTitle: "コマ画像をドラッグ&ドロップ",
+    dropSub: "複数枚まとめて選択OK・順番は後から並び替えられます",
+    selectBtn: "コマを選択",
+    dropAriaLabel: "コマ画像を選択またはドロップ",
+    panelList: (count: number, fileCount: number) =>
+      `コマ一覧 （${count}枚 → ${fileCount}ファイルに分割）`,
+    clear: "クリア",
+    fileLabel: (n: number) => `ファイル ${n}`,
+    processing: "結合中...",
+    createFiles: (n: number) => `${n}ファイルを作成`,
+    doneLabel: (files: number, posts: number) =>
+      posts >= 2 ? `結合完了 — ${files}ファイル / ${posts}投稿` : `結合完了 — ${files}ファイル`,
+    saveAll: "すべて保存",
+    captionTitle: "X投稿用キャプション",
+    prefixLabel: "プレフィックス（任意）",
+    prefixPlaceholder: "作品名・ハッシュタグなど（省略可）",
+    formatLabel: "形式",
+    captionFormats: [
+      { value: "N/T" as CaptionFormat, label: "1/3" },
+      { value: "(N/T)" as CaptionFormat, label: "(1/3)" },
+      { value: "N枚目/T枚" as CaptionFormat, label: "1枚目/3枚" },
+    ],
+    postLabel: (n: number, count: number) => `投稿${n}（${count}枚）`,
+    copy: "コピー",
+    copied: "✓",
+    copyAll: "すべてのキャプションをコピー",
+    copiedAll: "✓ コピーしました",
+    postHeader: (n: number, count: number) => `投稿 ${n}（${count}枚添付）`,
+    frameRange: (s: number, e: number) => `コマ ${s}〜${e}`,
+    save: "保存",
+    imageAlt: (n: number) => `ファイル ${n}`,
+    splitHere: "ここで分ける",
+    merge: "↕ まとめる",
+  };
   const [panels, setPanels] = useState<Panel[]>([]);
   const [combineCount, setCombineCount] = useState<2 | 3>(2);
   const [format, setFormat] = useState<"jpeg" | "png">("jpeg");
@@ -377,7 +457,7 @@ export default function StitchConverter() {
           {/* 結合枚数 */}
           <div>
             <label className="block text-xs font-medium text-muted mb-2">
-              結合するコマ数
+              {t.combineCount}
             </label>
             <div className="flex rounded-lg border border-border overflow-hidden">
               {([2, 3] as const).map((n) => (
@@ -390,7 +470,7 @@ export default function StitchConverter() {
                       : "text-muted hover:text-foreground"
                   }`}
                 >
-                  {n}枚
+                  {t.frameN(n)}
                 </button>
               ))}
             </div>
@@ -399,7 +479,7 @@ export default function StitchConverter() {
           {/* 出力形式 */}
           <div>
             <label className="block text-xs font-medium text-muted mb-2">
-              出力形式
+              {t.outputFormat}
             </label>
             <div className="flex rounded-lg border border-border overflow-hidden">
               {(["jpeg", "png"] as const).map((f) => (
@@ -421,7 +501,7 @@ export default function StitchConverter() {
           {/* 余白色（幅が異なるコマがある場合） */}
           <div>
             <label className="block text-xs font-medium text-muted mb-2">
-              余白色
+              {t.bgColor}
             </label>
             <div className="flex items-center gap-2 h-[44px]">
               <input
@@ -438,7 +518,7 @@ export default function StitchConverter() {
           {format === "jpeg" && (
             <div className="flex-1 min-w-36">
               <label className="block text-xs font-medium text-muted mb-2">
-                品質 ({quality}%)
+                {t.quality(quality)}
               </label>
               <input
                 type="range"
@@ -475,7 +555,7 @@ export default function StitchConverter() {
         }`}
         role="button"
         tabIndex={0}
-        aria-label="コマ画像を選択またはドロップ"
+        aria-label={t.dropAriaLabel}
         onKeyDown={(e) => e.key === "Enter" && fileInputRef.current?.click()}
       >
         <input
@@ -488,10 +568,10 @@ export default function StitchConverter() {
         />
         <div className="text-4xl mb-4">🖼️</div>
         <p className="text-base font-semibold text-foreground mb-1">
-          コマ画像をドラッグ&ドロップ
+          {t.dropTitle}
         </p>
         <p className="text-sm text-muted mb-4">
-          複数枚まとめて選択OK・順番は後から並び替えられます
+          {t.dropSub}
         </p>
         <button
           type="button"
@@ -501,7 +581,7 @@ export default function StitchConverter() {
           }}
           className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-accent text-white text-sm font-semibold hover:bg-accent-hover active:scale-95 transition-all min-h-[44px]"
         >
-          コマを選択
+          {t.selectBtn}
         </button>
       </div>
 
@@ -510,16 +590,13 @@ export default function StitchConverter() {
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             <p className="text-sm font-medium text-foreground">
-              コマ一覧{" "}
-              <span className="text-muted font-normal">
-                （{panels.length}枚 → {groups.length}ファイルに分割）
-              </span>
+              {t.panelList(panels.length, groups.length)}
             </p>
             <button
               onClick={clearAll}
               className="text-xs text-muted hover:text-foreground transition-colors px-3 py-2 min-h-[44px]"
             >
-              クリア
+              {t.clear}
             </button>
           </div>
 
@@ -537,7 +614,7 @@ export default function StitchConverter() {
                   {isGroupStart && (
                     <div className="flex items-center gap-2 mb-2 mt-1">
                       <span className="text-xs font-semibold text-accent">
-                        ファイル {groupIndex + 1}
+                        {t.fileLabel(groupIndex + 1)}
                       </span>
                       <div className="flex-1 border-t border-border" />
                     </div>
@@ -616,9 +693,7 @@ export default function StitchConverter() {
             disabled={isProcessing}
             className="w-full py-4 rounded-xl bg-accent text-white font-bold text-base hover:bg-accent-hover active:scale-[0.99] transition-all min-h-[44px] disabled:opacity-50 mt-2"
           >
-            {isProcessing
-              ? "結合中..."
-              : `${groups.length}ファイルを作成`}
+            {isProcessing ? t.processing : t.createFiles(groups.length)}
           </button>
         </div>
       )}
@@ -628,17 +703,14 @@ export default function StitchConverter() {
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <p className="text-sm font-medium text-foreground">
-              結合完了 —{" "}
-              {postGroups.length >= 2
-                ? `${stitched.length}ファイル / ${postGroups.length}投稿`
-                : `${stitched.length}ファイル`}
+              {t.doneLabel(stitched.length, postGroups.length)}
             </p>
             {stitched.length > 1 && (
               <button
                 onClick={saveAll}
                 className="px-4 py-2.5 rounded-xl bg-accent text-white text-sm font-semibold hover:bg-accent-hover active:scale-95 transition-all min-h-[44px]"
               >
-                すべて保存
+                {t.saveAll}
               </button>
             )}
           </div>
@@ -647,19 +719,19 @@ export default function StitchConverter() {
           {stitched.length >= 2 && (
             <div className="bg-surface border border-border rounded-xl p-4 space-y-4">
               <p className="text-sm font-semibold text-foreground">
-                X投稿用キャプション
+                {t.captionTitle}
               </p>
 
               {/* プレフィックス入力 */}
               <div>
                 <label className="block text-xs font-medium text-muted mb-1.5">
-                  プレフィックス（任意）
+                  {t.prefixLabel}
                 </label>
                 <input
                   type="text"
                   value={captionPrefix}
                   onChange={(e) => setCaptionPrefix(e.target.value)}
-                  placeholder="作品名・ハッシュタグなど（省略可）"
+                  placeholder={t.prefixPlaceholder}
                   className="w-full px-3 py-2.5 rounded-lg border border-border bg-background text-sm text-foreground placeholder:text-muted focus:outline-none focus:border-accent transition-colors min-h-[44px]"
                 />
               </div>
@@ -667,16 +739,10 @@ export default function StitchConverter() {
               {/* 形式選択 */}
               <div>
                 <label className="block text-xs font-medium text-muted mb-1.5">
-                  形式
+                  {t.formatLabel}
                 </label>
                 <div className="flex rounded-lg border border-border overflow-hidden">
-                  {(
-                    [
-                      { value: "N/T", label: "1/3" },
-                      { value: "(N/T)", label: "(1/3)" },
-                      { value: "N枚目/T枚", label: "1枚目/3枚" },
-                    ] as { value: CaptionFormat; label: string }[]
-                  ).map(({ value, label }) => (
+                  {t.captionFormats.map(({ value, label }) => (
                     <button
                       key={value}
                       onClick={() => setCaptionFormat(value)}
@@ -699,7 +765,8 @@ export default function StitchConverter() {
                     postIdx + 1,
                     postGroups.length,
                     captionPrefix,
-                    captionFormat
+                    captionFormat,
+                    locale
                   );
                   return (
                     <li
@@ -707,8 +774,7 @@ export default function StitchConverter() {
                       className="flex items-center gap-3 bg-background border border-border rounded-lg px-3 py-2"
                     >
                       <span className="text-xs text-muted shrink-0 w-14">
-                        投稿{postIdx + 1}
-                        <span className="text-muted/60">（{group.length}枚）</span>
+                        {t.postLabel(postIdx + 1, group.length)}
                       </span>
                       <span className="flex-1 text-sm text-foreground font-mono truncate">
                         {cap}
@@ -721,7 +787,7 @@ export default function StitchConverter() {
                         }}
                         className="shrink-0 px-3 py-1.5 rounded-lg border border-border text-xs font-medium text-muted hover:text-foreground hover:border-accent transition-all min-h-[44px] min-w-[64px]"
                       >
-                        {copiedIndex === postIdx ? "✓" : "コピー"}
+                        {copiedIndex === postIdx ? t.copied : t.copy}
                       </button>
                     </li>
                   );
@@ -738,7 +804,8 @@ export default function StitchConverter() {
                           postIdx + 1,
                           postGroups.length,
                           captionPrefix,
-                          captionFormat
+                          captionFormat,
+                          locale
                         )
                       )
                       .join("\n");
@@ -748,7 +815,7 @@ export default function StitchConverter() {
                   }}
                   className="w-full py-3 rounded-xl border border-border text-sm font-semibold text-foreground hover:border-accent hover:text-accent active:scale-[0.99] transition-all min-h-[44px]"
                 >
-                  {copiedAll ? "✓ コピーしました" : "すべてのキャプションをコピー"}
+                  {copiedAll ? t.copiedAll : t.copyAll}
                 </button>
               )}
             </div>
@@ -770,10 +837,12 @@ export default function StitchConverter() {
                       className={`flex items-center gap-2 mb-2 ${i > 0 ? "mt-3" : ""}`}
                     >
                       <span className="text-xs font-semibold text-accent">
-                        投稿 {postIdx + 1}
+                        {locale === "en" ? `Post ${postIdx + 1}` : `投稿 ${postIdx + 1}`}
                       </span>
                       <span className="text-xs text-muted">
-                        （{postGroups[postIdx].length}枚添付）
+                        {locale === "en"
+                          ? `(${postGroups[postIdx].length} attached)`
+                          : `（${postGroups[postIdx].length}枚添付）`}
                       </span>
                       <div className="flex-1 border-t border-border" />
                     </div>
@@ -784,9 +853,9 @@ export default function StitchConverter() {
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="text-sm font-semibold text-foreground">
-                          ファイル {i + 1}
+                          {t.fileLabel(i + 1)}
                           <span className="ml-2 text-xs font-normal text-muted">
-                            コマ {img.panelStart}〜{img.panelEnd}
+                            {t.frameRange(img.panelStart, img.panelEnd)}
                           </span>
                         </p>
                         <p className="text-xs text-muted mt-0.5">
@@ -797,7 +866,7 @@ export default function StitchConverter() {
                         onClick={() => saveImage(img, i)}
                         className="px-4 py-2.5 rounded-xl bg-accent text-white text-sm font-semibold hover:bg-accent-hover active:scale-95 transition-all min-h-[44px]"
                       >
-                        保存
+                        {t.save}
                       </button>
                     </div>
 
@@ -806,7 +875,7 @@ export default function StitchConverter() {
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={img.url}
-                        alt={`ファイル ${i + 1}`}
+                        alt={t.imageAlt(i + 1)}
                         className="w-full h-full object-contain max-h-64"
                       />
                     </div>
@@ -830,7 +899,7 @@ export default function StitchConverter() {
                         }`}
                       />
                       <span>
-                        {isSplitAfter ? "↕ まとめる" : "ここで分ける"}
+                        {isSplitAfter ? t.merge : t.splitHere}
                       </span>
                       <div
                         className={`flex-1 border-t transition-colors ${
