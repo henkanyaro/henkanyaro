@@ -20,7 +20,7 @@ export default function HomePage() {
     <div className="max-w-5xl mx-auto px-4 sm:px-6 py-12">
       {/* ヒーローセクション */}
       <div
-        className="relative overflow-hidden rounded-3xl mb-14 px-8 py-16 text-center"
+        className="relative overflow-hidden rounded-2xl sm:rounded-3xl mb-10 sm:mb-14 px-6 py-12 sm:px-8 sm:py-16 text-center"
         style={{
           background:
             "linear-gradient(135deg, #FFF0EA 0%, #fdf4ff 50%, #F3EFFE 100%)",

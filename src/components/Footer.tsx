@@ -15,7 +15,7 @@ export default function Footer() {
         }}
       />
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
-<div className="mb-6 p-4 rounded-lg border border-dashed border-border text-center text-sm text-muted">
+        <div className="mb-6 p-4 rounded-lg border border-dashed border-border text-center text-sm text-muted">
           <p className="font-medium text-muted">
             {isEn ? "Recommended Design Tools" : "おすすめデザインツール"}
           </p>
