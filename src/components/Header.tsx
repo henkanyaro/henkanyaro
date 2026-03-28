@@ -12,7 +12,7 @@ export default function Header() {
         </Link>
         <nav className="flex items-center gap-6">
           <Link
-            href="/"
+            href="/#tools"
             className="text-sm text-muted hover:text-foreground transition-colors"
           >
             ツール一覧
