@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import AdBanner from "@/components/AdBanner";
 import StitchConverter from "@/components/tools/StitchConverter";
+import ShareButtons from "@/components/ShareButtons";
 
 export const metadata: Metadata = {
   title: "コマ結合野郎 — インスタコマをX投稿用に縦結合",
@@ -89,6 +90,15 @@ export default function StitchPage() {
           <p className="font-medium text-foreground mb-1">🔒 プライバシー安心</p>
           <p>すべての処理はあなたのブラウザ内で完結します。画像はサーバーに送信されません。</p>
         </div>
+      </section>
+
+      {/* シェアボタン */}
+      <section className="mt-12 text-center">
+        <p className="text-xs font-medium text-muted mb-4">このツールをシェア</p>
+        <ShareButtons
+          url="/tools/resize"
+          title="コマ結合野郎 — インスタコマをX投稿用に縦結合"
+        />
       </section>
     </div>
   );
