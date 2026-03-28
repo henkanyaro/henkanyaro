@@ -76,6 +76,14 @@ export default function StitchPage() {
               「投稿用画像を作成」ボタンを押すと縦結合された画像が生成されます。各投稿ごとに「保存」、または「すべて保存」で一括保存。
             </span>
           </li>
+          <li className="flex gap-3">
+            <span className="shrink-0 w-6 h-6 rounded-full bg-accent text-white flex items-center justify-center text-xs font-bold">
+              4
+            </span>
+            <span>
+              投稿が2つ以上になると「X投稿用キャプション」が表示されます。作品名やハッシュタグを入力すると「新刊出ました！ 1/3」のようなキャプションが自動生成されます。形式（1/3・(1/3)・1枚目/3枚）を選んで各投稿ごとにコピー、または「すべてコピー」で一括コピーできます。
+            </span>
+          </li>
         </ol>
         <div className="mt-4 p-4 bg-surface border border-border rounded-xl text-sm text-muted">
           <p className="font-medium text-foreground mb-1">🔒 プライバシー安心</p>
