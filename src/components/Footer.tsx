@@ -16,7 +16,7 @@ export default function Footer() {
             <a href="/privacy" className="hover:text-foreground transition-colors">
               プライバシーポリシー
             </a>
-            <a href="#" className="hover:text-foreground transition-colors">
+            <a href="/terms" className="hover:text-foreground transition-colors">
               利用規約
             </a>
           </div>
