@@ -48,6 +48,27 @@ function generateCaption(
   return prefix ? `${prefix} ${numbering}` : numbering;
 }
 
+function computePostGroups(count: number, splits: Set<number>): number[][] {
+  if (count === 0) return [];
+  const groups: number[][] = [];
+  let current: number[] = [];
+  for (let i = 0; i < count; i++) {
+    current.push(i);
+    if (splits.has(i) && i < count - 1) {
+      groups.push(current);
+      current = [];
+    }
+  }
+  groups.push(current);
+  return groups;
+}
+
+function defaultSplits(count: number): Set<number> {
+  const s = new Set<number>();
+  for (let i = 3; i < count - 1; i += 4) s.add(i);
+  return s;
+}
+
 async function copyToClipboard(text: string): Promise<void> {
   if (navigator.clipboard) {
     await navigator.clipboard.writeText(text);
@@ -149,6 +170,7 @@ export default function StitchConverter() {
   const [captionFormat, setCaptionFormat] = useState<CaptionFormat>("N/T");
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
   const [copiedAll, setCopiedAll] = useState(false);
+  const [postSplits, setPostSplits] = useState<Set<number>>(new Set());
   const fileInputRef = useRef<HTMLInputElement>(null);
   const dropZoneRef = useRef<HTMLDivElement>(null);
 
@@ -172,6 +194,11 @@ export default function StitchConverter() {
       return [];
     });
   }, [panels, combineCount, format, quality, bgColor]);
+
+  // stitched が更新されたらポスト分割をデフォルトにリセット
+  useEffect(() => {
+    setPostSplits(defaultSplits(stitched.length));
+  }, [stitched]);
 
   const addFiles = useCallback((newFiles: File[]) => {
     const imageFiles = newFiles.filter((f) => f.type.startsWith("image/"));
@@ -226,11 +253,23 @@ export default function StitchConverter() {
     setStitched([]);
   };
 
-  // グループ分けを計算
+  // コマのグループ分けを計算
   const groups: Panel[][] = [];
   for (let i = 0; i < panels.length; i += combineCount) {
     groups.push(panels.slice(i, i + combineCount));
   }
+
+  // X投稿グループを計算（結合済み画像を何枚まとめて1投稿にするか）
+  const postGroups = computePostGroups(stitched.length, postSplits);
+
+  const toggleSplit = useCallback((i: number) => {
+    setPostSplits((prev) => {
+      const next = new Set(prev);
+      if (next.has(i)) next.delete(i);
+      else next.add(i);
+      return next;
+    });
+  }, []);
 
   const handleStitch = async () => {
     if (panels.length === 0) return;
@@ -266,9 +305,10 @@ export default function StitchConverter() {
 
   const saveImage = async (img: StitchedImage, index: number) => {
     const fileName = `x_post_${index + 1}${format === "jpeg" ? ".jpg" : ".png"}`;
+    const postIdx = postGroups.findIndex((g) => g.includes(index));
     const caption =
-      stitched.length >= 2
-        ? generateCaption(index + 1, stitched.length, captionPrefix, captionFormat)
+      postGroups.length >= 2
+        ? generateCaption(postIdx + 1, postGroups.length, captionPrefix, captionFormat)
         : undefined;
 
     if (navigator.share && navigator.canShare) {
@@ -588,7 +628,10 @@ export default function StitchConverter() {
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <p className="text-sm font-medium text-foreground">
-              結合完了 — {stitched.length}枚の投稿用画像
+              結合完了 —{" "}
+              {postGroups.length >= 2
+                ? `${stitched.length}枚 / ${postGroups.length}投稿`
+                : `${stitched.length}枚`}
             </p>
             {stitched.length > 1 && (
               <button
@@ -600,8 +643,8 @@ export default function StitchConverter() {
             )}
           </div>
 
-          {/* X投稿用キャプション（2投稿以上のとき表示） */}
-          {stitched.length >= 2 && (
+          {/* X投稿用キャプション（投稿グループが2つ以上のとき表示） */}
+          {postGroups.length >= 2 && (
             <div className="bg-surface border border-border rounded-xl p-4 space-y-4">
               <p className="text-sm font-semibold text-foreground">
                 X投稿用キャプション
@@ -649,22 +692,25 @@ export default function StitchConverter() {
                 </div>
               </div>
 
-              {/* 個別キャプション一覧 */}
+              {/* 投稿グループごとのキャプション */}
               <ul className="space-y-2">
-                {stitched.map((_, i) => {
+                {postGroups.map((group, postIdx) => {
                   const cap = generateCaption(
-                    i + 1,
-                    stitched.length,
+                    postIdx + 1,
+                    postGroups.length,
                     captionPrefix,
                     captionFormat
                   );
                   return (
                     <li
-                      key={i}
+                      key={postIdx}
                       className="flex items-center gap-3 bg-background border border-border rounded-lg px-3 py-2"
                     >
-                      <span className="text-xs text-muted shrink-0 w-12">
-                        投稿{i + 1}
+                      <span className="text-xs text-muted shrink-0 w-14">
+                        投稿{postIdx + 1}
+                        <span className="text-muted/60">
+                          （{group.length}枚）
+                        </span>
                       </span>
                       <span className="flex-1 text-sm text-foreground font-mono truncate">
                         {cap}
@@ -672,12 +718,12 @@ export default function StitchConverter() {
                       <button
                         onClick={async () => {
                           await copyToClipboard(cap);
-                          setCopiedIndex(i);
+                          setCopiedIndex(postIdx);
                           setTimeout(() => setCopiedIndex(null), 800);
                         }}
                         className="shrink-0 px-3 py-1.5 rounded-lg border border-border text-xs font-medium text-muted hover:text-foreground hover:border-accent transition-all min-h-[44px] min-w-[64px]"
                       >
-                        {copiedIndex === i ? "✓" : "コピー"}
+                        {copiedIndex === postIdx ? "✓" : "コピー"}
                       </button>
                     </li>
                   );
@@ -687,11 +733,11 @@ export default function StitchConverter() {
               {/* すべてコピー */}
               <button
                 onClick={async () => {
-                  const all = stitched
-                    .map((_, i) =>
+                  const all = postGroups
+                    .map((_, postIdx) =>
                       generateCaption(
-                        i + 1,
-                        stitched.length,
+                        postIdx + 1,
+                        postGroups.length,
                         captionPrefix,
                         captionFormat
                       )
@@ -708,44 +754,97 @@ export default function StitchConverter() {
             </div>
           )}
 
-          <ul className="space-y-4">
-            {stitched.map((img, i) => (
-              <li
-                key={img.id}
-                className="bg-surface border border-border rounded-xl p-4 space-y-3"
-              >
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-semibold text-foreground">
-                      投稿 {i + 1}
-                      <span className="ml-2 text-xs font-normal text-muted">
-                        コマ {img.panelStart}〜{img.panelEnd}
-                      </span>
-                    </p>
-                    <p className="text-xs text-muted mt-0.5">
-                      {img.width}×{img.height}px　{formatBytes(img.size)}
-                    </p>
-                  </div>
-                  <button
-                    onClick={() => saveImage(img, i)}
-                    className="px-4 py-2.5 rounded-xl bg-accent text-white text-sm font-semibold hover:bg-accent-hover active:scale-95 transition-all min-h-[44px]"
-                  >
-                    保存
-                  </button>
-                </div>
+          {/* 結合済み画像リスト（投稿グループ分割UI付き） */}
+          <div>
+            {stitched.map((img, i) => {
+              const postIdx = postGroups.findIndex((g) => g.includes(i));
+              const isFirstInGroup = postGroups[postIdx]?.[0] === i;
+              const isLast = i === stitched.length - 1;
+              const isSplitAfter = postSplits.has(i);
 
-                {/* プレビュー（縮小表示） */}
-                <div className="rounded-lg overflow-hidden bg-gray-100 max-h-64 flex items-center justify-center">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={img.url}
-                    alt={`投稿 ${i + 1}`}
-                    className="w-full h-full object-contain max-h-64"
-                  />
+              return (
+                <div key={img.id}>
+                  {/* 投稿グループヘッダー（2グループ以上のとき） */}
+                  {isFirstInGroup && postGroups.length >= 2 && (
+                    <div
+                      className={`flex items-center gap-2 mb-2 ${i > 0 ? "mt-3" : ""}`}
+                    >
+                      <span className="text-xs font-semibold text-accent">
+                        投稿 {postIdx + 1}
+                      </span>
+                      <span className="text-xs text-muted">
+                        （{postGroups[postIdx].length}枚添付）
+                      </span>
+                      <div className="flex-1 border-t border-border" />
+                    </div>
+                  )}
+
+                  {/* 画像カード */}
+                  <div className="bg-surface border border-border rounded-xl p-4 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm font-semibold text-foreground">
+                          画像 {i + 1}
+                          <span className="ml-2 text-xs font-normal text-muted">
+                            コマ {img.panelStart}〜{img.panelEnd}
+                          </span>
+                        </p>
+                        <p className="text-xs text-muted mt-0.5">
+                          {img.width}×{img.height}px　{formatBytes(img.size)}
+                        </p>
+                      </div>
+                      <button
+                        onClick={() => saveImage(img, i)}
+                        className="px-4 py-2.5 rounded-xl bg-accent text-white text-sm font-semibold hover:bg-accent-hover active:scale-95 transition-all min-h-[44px]"
+                      >
+                        保存
+                      </button>
+                    </div>
+
+                    {/* プレビュー（縮小表示） */}
+                    <div className="rounded-lg overflow-hidden bg-gray-100 max-h-64 flex items-center justify-center">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={img.url}
+                        alt={`画像 ${i + 1}`}
+                        className="w-full h-full object-contain max-h-64"
+                      />
+                    </div>
+                  </div>
+
+                  {/* 分ける / まとめる トグル */}
+                  {!isLast && (
+                    <button
+                      onClick={() => toggleSplit(i)}
+                      className={`w-full flex items-center gap-3 py-2 text-xs font-medium transition-all group ${
+                        isSplitAfter
+                          ? "text-accent"
+                          : "text-muted hover:text-foreground"
+                      }`}
+                    >
+                      <div
+                        className={`flex-1 border-t transition-colors ${
+                          isSplitAfter
+                            ? "border-accent"
+                            : "border-border group-hover:border-gray-300"
+                        }`}
+                      />
+                      <span>
+                        {isSplitAfter ? "↕ まとめる" : "ここで分ける"}
+                      </span>
+                      <div
+                        className={`flex-1 border-t transition-colors ${
+                          isSplitAfter
+                            ? "border-accent"
+                            : "border-border group-hover:border-gray-300"
+                        }`}
+                      />
+                    </button>
+                  )}
                 </div>
-              </li>
-            ))}
-          </ul>
+              );
+            })}
+          </div>
         </div>
       )}
     </div>
