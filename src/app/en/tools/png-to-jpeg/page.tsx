@@ -29,9 +29,15 @@ export const metadata: Metadata = {
 
 export default function PngToJpegPageEn() {
   return (
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10">
+    <div
+      className="max-w-3xl mx-auto px-4 sm:px-6 py-10"
+      style={{ "--accent": "#FF6B35", "--accent-hover": "#e85e28" } as React.CSSProperties}
+    >
       {/* Page header */}
-      <div className="mb-8">
+      <div
+        className="mb-8 pl-4 border-l-4"
+        style={{ borderLeftColor: "#FF6B35" }}
+      >
         <div className="flex items-center gap-2 text-sm text-muted mb-2">
           <a href="/en" className="hover:text-foreground transition-colors">
             Henkan Yaro
@@ -40,7 +46,7 @@ export default function PngToJpegPageEn() {
           <span>Bulk JPEG Converter</span>
         </div>
         <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-foreground mb-2">
-          Bulk JPEG <span className="text-accent">Converter</span>
+          Bulk JPEG <span style={{ color: "#FF6B35" }}>Converter</span>
         </h1>
         <p className="text-muted text-sm sm:text-base">
           Convert PNG, WebP, GIF and more to JPEG in bulk. Adjust quality and
