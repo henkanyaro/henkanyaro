@@ -9,6 +9,8 @@ export const toolsEn: Tool[] = [
     href: "/en/tools/png-to-jpeg",
     available: true,
     emoji: "🖼️",
+    color: "#FF6B35",
+    colorLight: "#FFF0EA",
   },
   {
     id: "resize",
@@ -18,5 +20,7 @@ export const toolsEn: Tool[] = [
     href: "/tools/resize",
     available: true,
     emoji: "🔗",
+    color: "#7C3AED",
+    colorLight: "#F3EFFE",
   },
 ];

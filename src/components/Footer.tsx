@@ -6,7 +6,14 @@ export default function Footer() {
   const isEn = pathname.startsWith("/en");
 
   return (
-    <footer className="mt-auto border-t border-border bg-surface">
+    <footer className="mt-auto bg-surface">
+      {/* グラデーション上ボーダー */}
+      <div
+        className="h-[3px] w-full"
+        style={{
+          background: "linear-gradient(90deg, #FF6B35 0%, #7C3AED 100%)",
+        }}
+      />
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
 <div className="mb-6 p-4 rounded-lg border border-dashed border-border text-center text-sm text-muted">
           <p className="font-medium text-muted">

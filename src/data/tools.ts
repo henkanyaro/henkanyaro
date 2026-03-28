@@ -6,6 +6,8 @@ export interface Tool {
   available: boolean;
   badge?: string;
   emoji: string;
+  color: string;
+  colorLight: string;
 }
 
 export const tools: Tool[] = [
@@ -17,6 +19,8 @@ export const tools: Tool[] = [
     href: "/tools/png-to-jpeg",
     available: true,
     emoji: "🖼️",
+    color: "#FF6B35",
+    colorLight: "#FFF0EA",
   },
   {
     id: "resize",
@@ -26,5 +30,7 @@ export const tools: Tool[] = [
     href: "/tools/resize",
     available: true,
     emoji: "🔗",
+    color: "#7C3AED",
+    colorLight: "#F3EFFE",
   },
 ];

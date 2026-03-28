@@ -23,7 +23,10 @@ export default function StitchPage() {
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10">
       {/* ページヘッダー */}
-      <div className="mb-8">
+      <div
+        className="mb-8 pl-4 border-l-4"
+        style={{ borderLeftColor: "#7C3AED" }}
+      >
         <div className="flex items-center gap-2 text-sm text-muted mb-2">
           <a href="/" className="hover:text-foreground transition-colors">
             変換野郎
@@ -32,7 +35,7 @@ export default function StitchPage() {
           <span>コマ結合野郎</span>
         </div>
         <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-foreground mb-2">
-          コマ結合<span className="text-accent">野郎</span>
+          コマ結合<span style={{ color: "#7C3AED" }}>野郎</span>
         </h1>
         <p className="text-muted text-sm sm:text-base">
           インスタグラム用のコマ画像を2〜3枚縦につなげて、X投稿用の画像を作成します。

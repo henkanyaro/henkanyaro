@@ -11,11 +11,17 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 bg-surface border-b border-border backdrop-blur-sm bg-white/90">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
-        <Link
-          href={isEn ? "/en" : "/"}
-          className="text-lg font-bold tracking-tight text-foreground hover:text-accent transition-colors"
-        >
-          {isEn ? "Henkan Yaro" : "変換野郎"}
+        <Link href={isEn ? "/en" : "/"} className="text-lg font-bold tracking-tight">
+          <span
+            style={{
+              background: "linear-gradient(90deg, #FF6B35 0%, #7C3AED 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+            }}
+          >
+            {isEn ? "Henkan Yaro" : "変換野郎"}
+          </span>
         </Link>
         <nav className="flex items-center gap-4">
           <Link

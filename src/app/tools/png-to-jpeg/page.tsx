@@ -29,7 +29,10 @@ export default function PngToJpegPage() {
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10">
       {/* ページヘッダー */}
-      <div className="mb-8">
+      <div
+        className="mb-8 pl-4 border-l-4"
+        style={{ borderLeftColor: "#FF6B35" }}
+      >
         <div className="flex items-center gap-2 text-sm text-muted mb-2">
           <a href="/" className="hover:text-foreground transition-colors">
             変換野郎
@@ -38,7 +41,7 @@ export default function PngToJpegPage() {
           <span>一括JPEG変換野郎</span>
         </div>
         <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-foreground mb-2">
-          一括JPEG変換<span className="text-accent">野郎</span>
+          一括JPEG変換<span style={{ color: "#FF6B35" }}>野郎</span>
         </h1>
         <p className="text-muted text-sm sm:text-base">
           PNG・WebP・GIF などの画像をまとめてJPEGに変換。品質と背景色を指定できます。

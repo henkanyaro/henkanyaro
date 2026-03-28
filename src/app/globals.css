@@ -8,6 +8,11 @@
   --border: #e5e7eb;
   --accent: #ff4d00;
   --accent-hover: #e64400;
+
+  --color-tool-jpeg: #FF6B35;
+  --color-tool-stitch: #7C3AED;
+  --color-tool-jpeg-light: #FFF0EA;
+  --color-tool-stitch-light: #F3EFFE;
 }
 
 @theme inline {
