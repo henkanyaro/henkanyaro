@@ -3,7 +3,6 @@ import Link from "next/link";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 import LanguageSwitcher from "./LanguageSwitcher";
-import ShareButtons from "./ShareButtons";
 
 export default function Header() {
   const pathname = usePathname();
@@ -47,12 +46,6 @@ export default function Header() {
           >
             {isEn ? "Contact" : "お問い合わせ"}
           </Link>
-          {!isEn && (
-            <>
-              <div className="w-px h-4 bg-border" />
-              <ShareButtons compact />
-            </>
-          )}
           <LanguageSwitcher />
         </nav>
 
@@ -100,12 +93,6 @@ export default function Header() {
               {isEn ? "Contact" : "お問い合わせ"}
             </Link>
           </nav>
-          {!isEn && (
-            <div className="px-4 pb-5 border-t border-border pt-4">
-              <p className="text-xs text-muted mb-3">このサイトをシェア</p>
-              <ShareButtons />
-            </div>
-          )}
         </div>
       )}
     </header>

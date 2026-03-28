@@ -1,5 +1,6 @@
 "use client";
 import { usePathname } from "next/navigation";
+import ShareButtons from "@/components/ShareButtons";
 
 export default function Footer() {
   const pathname = usePathname();
@@ -15,6 +16,12 @@ export default function Footer() {
         }}
       />
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
+        {!isEn && (
+          <div className="mb-8 text-center">
+            <p className="text-xs font-medium text-muted mb-4">このサイトをシェア</p>
+            <ShareButtons />
+          </div>
+        )}
         <div className="mb-6 p-4 rounded-lg border border-dashed border-border text-center text-sm text-muted">
           <p className="font-medium text-muted">
             {isEn ? "Recommended Design Tools" : "おすすめデザインツール"}
