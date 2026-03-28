@@ -377,7 +377,7 @@ export default function StitchConverter() {
           {/* 結合枚数 */}
           <div>
             <label className="block text-xs font-medium text-muted mb-2">
-              1投稿あたりのコマ数
+              結合するコマ数
             </label>
             <div className="flex rounded-lg border border-border overflow-hidden">
               {([2, 3] as const).map((n) => (
