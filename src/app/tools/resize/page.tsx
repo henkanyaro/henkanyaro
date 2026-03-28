@@ -21,7 +21,10 @@ export const metadata: Metadata = {
 
 export default function StitchPage() {
   return (
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10">
+    <div
+      className="max-w-3xl mx-auto px-4 sm:px-6 py-10"
+      style={{ "--accent": "#7C3AED", "--accent-hover": "#6d28d9" } as React.CSSProperties}
+    >
       {/* ページヘッダー */}
       <div
         className="mb-8 pl-4 border-l-4"

@@ -27,7 +27,10 @@ export const metadata: Metadata = {
 
 export default function PngToJpegPage() {
   return (
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10">
+    <div
+      className="max-w-3xl mx-auto px-4 sm:px-6 py-10"
+      style={{ "--accent": "#FF6B35", "--accent-hover": "#e85e28" } as React.CSSProperties}
+    >
       {/* ページヘッダー */}
       <div
         className="mb-8 pl-4 border-l-4"
