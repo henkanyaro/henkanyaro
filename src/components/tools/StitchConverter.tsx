@@ -512,7 +512,7 @@ export default function StitchConverter() {
             <p className="text-sm font-medium text-foreground">
               コマ一覧{" "}
               <span className="text-muted font-normal">
-                （{panels.length}枚 → {groups.length}投稿に分割）
+                （{panels.length}枚 → {groups.length}ファイルに分割）
               </span>
             </p>
             <button
@@ -537,7 +537,7 @@ export default function StitchConverter() {
                   {isGroupStart && (
                     <div className="flex items-center gap-2 mb-2 mt-1">
                       <span className="text-xs font-semibold text-accent">
-                        投稿 {groupIndex + 1}
+                        ファイル {groupIndex + 1}
                       </span>
                       <div className="flex-1 border-t border-border" />
                     </div>
@@ -618,7 +618,7 @@ export default function StitchConverter() {
           >
             {isProcessing
               ? "結合中..."
-              : `${groups.length}枚の投稿用画像を作成`}
+              : `${groups.length}ファイルを作成`}
           </button>
         </div>
       )}
@@ -630,8 +630,8 @@ export default function StitchConverter() {
             <p className="text-sm font-medium text-foreground">
               結合完了 —{" "}
               {postGroups.length >= 2
-                ? `${stitched.length}枚 / ${postGroups.length}投稿`
-                : `${stitched.length}枚`}
+                ? `${stitched.length}ファイル / ${postGroups.length}投稿`
+                : `${stitched.length}ファイル`}
             </p>
             {stitched.length > 1 && (
               <button
@@ -784,7 +784,7 @@ export default function StitchConverter() {
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="text-sm font-semibold text-foreground">
-                          画像 {i + 1}
+                          ファイル {i + 1}
                           <span className="ml-2 text-xs font-normal text-muted">
                             コマ {img.panelStart}〜{img.panelEnd}
                           </span>
@@ -806,7 +806,7 @@ export default function StitchConverter() {
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={img.url}
-                        alt={`画像 ${i + 1}`}
+                        alt={`ファイル ${i + 1}`}
                         className="w-full h-full object-contain max-h-64"
                       />
                     </div>
