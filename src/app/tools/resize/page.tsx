@@ -63,7 +63,7 @@ export default function StitchPage() {
               1
             </span>
             <span>
-              1投稿あたりのコマ数（2枚 or 3枚）を選び、インスタ用のコマ画像をドロップまたは選択します。
+              「結合するコマ数」（2枚 or 3枚）を選んで、コマ画像をドロップまたはボタンで選択します。複数枚まとめて選択できます。
             </span>
           </li>
           <li className="flex gap-3">
@@ -71,7 +71,7 @@ export default function StitchPage() {
               2
             </span>
             <span>
-              ▲▼ボタンでコマの順番を調整します。自動でグループ分け（投稿1・投稿2…）が表示されます。
+              ▲▼ボタンでコマの順番を調整します。指定したコマ数ごとに「ファイル1・ファイル2…」とグループ分けされてプレビューされます。
             </span>
           </li>
           <li className="flex gap-3">
@@ -79,7 +79,7 @@ export default function StitchPage() {
               3
             </span>
             <span>
-              「投稿用画像を作成」ボタンを押すと縦結合された画像が生成されます。各投稿ごとに「保存」、または「すべて保存」で一括保存。
+              「Nファイルを作成」を押すと縦結合されたファイルが生成されます。デフォルトで4ファイルずつ1投稿にまとまります。ファイル間の「ここで分ける／まとめる」で投稿グループを自由に変更できます。
             </span>
           </li>
           <li className="flex gap-3">
@@ -87,7 +87,15 @@ export default function StitchPage() {
               4
             </span>
             <span>
-              投稿が2つ以上になると「X投稿用キャプション」が表示されます。作品名やハッシュタグを入力すると「新刊出ました！ 1/3」のようなキャプションが自動生成されます。形式（1/3・(1/3)・1枚目/3枚）を選んで各投稿ごとにコピー、または「すべてコピー」で一括コピーできます。
+              各ファイルを「保存」、または「すべて保存」で一括保存します。スマホでは保存時にX・Instagramなどのシェアシートが開きます。
+            </span>
+          </li>
+          <li className="flex gap-3">
+            <span className="shrink-0 w-6 h-6 rounded-full bg-accent text-white flex items-center justify-center text-xs font-bold">
+              5
+            </span>
+            <span>
+              「X投稿用キャプション」では、作品名やハッシュタグを入力すると「新刊出ました！ 1/3」のようなキャプションが投稿ごとに自動生成されます。形式は 1/3・(1/3)・1枚目/3枚 から選択でき、個別コピーまたは「すべてコピー」で一括コピーできます。
             </span>
           </li>
         </ol>
