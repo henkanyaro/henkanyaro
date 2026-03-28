@@ -26,6 +26,44 @@ interface StitchedImage {
   panelEnd: number;
 }
 
+type CaptionFormat = "N/T" | "(N/T)" | "N枚目/T枚";
+
+function generateCaption(
+  index: number,
+  total: number,
+  prefix: string,
+  fmt: CaptionFormat
+): string {
+  let numbering: string;
+  switch (fmt) {
+    case "(N/T)":
+      numbering = `(${index}/${total})`;
+      break;
+    case "N枚目/T枚":
+      numbering = `${index}枚目/${total}枚`;
+      break;
+    default:
+      numbering = `${index}/${total}`;
+  }
+  return prefix ? `${prefix} ${numbering}` : numbering;
+}
+
+async function copyToClipboard(text: string): Promise<void> {
+  if (navigator.clipboard) {
+    await navigator.clipboard.writeText(text);
+  } else {
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    document.execCommand("copy");
+    document.body.removeChild(ta);
+  }
+}
+
 function formatBytes(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`;
   if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
@@ -107,6 +145,10 @@ export default function StitchConverter() {
   const [stitched, setStitched] = useState<StitchedImage[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
+  const [captionPrefix, setCaptionPrefix] = useState("");
+  const [captionFormat, setCaptionFormat] = useState<CaptionFormat>("N/T");
+  const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
+  const [copiedAll, setCopiedAll] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const dropZoneRef = useRef<HTMLDivElement>(null);
 
@@ -224,6 +266,10 @@ export default function StitchConverter() {
 
   const saveImage = async (img: StitchedImage, index: number) => {
     const fileName = `x_post_${index + 1}${format === "jpeg" ? ".jpg" : ".png"}`;
+    const caption =
+      stitched.length >= 2
+        ? generateCaption(index + 1, stitched.length, captionPrefix, captionFormat)
+        : undefined;
 
     if (navigator.share && navigator.canShare) {
       try {
@@ -233,7 +279,11 @@ export default function StitchConverter() {
           type: format === "jpeg" ? "image/jpeg" : "image/png",
         });
         if (navigator.canShare({ files: [shareFile] })) {
-          await navigator.share({ files: [shareFile], title: fileName });
+          await navigator.share({
+            files: [shareFile],
+            title: fileName,
+            ...(caption ? { text: caption } : {}),
+          });
           return;
         }
       } catch (err) {
@@ -549,6 +599,114 @@ export default function StitchConverter() {
               </button>
             )}
           </div>
+
+          {/* X投稿用キャプション（2投稿以上のとき表示） */}
+          {stitched.length >= 2 && (
+            <div className="bg-surface border border-border rounded-xl p-4 space-y-4">
+              <p className="text-sm font-semibold text-foreground">
+                X投稿用キャプション
+              </p>
+
+              {/* プレフィックス入力 */}
+              <div>
+                <label className="block text-xs font-medium text-muted mb-1.5">
+                  プレフィックス（任意）
+                </label>
+                <input
+                  type="text"
+                  value={captionPrefix}
+                  onChange={(e) => setCaptionPrefix(e.target.value)}
+                  placeholder="作品名・ハッシュタグなど（省略可）"
+                  className="w-full px-3 py-2.5 rounded-lg border border-border bg-background text-sm text-foreground placeholder:text-muted focus:outline-none focus:border-accent transition-colors min-h-[44px]"
+                />
+              </div>
+
+              {/* 形式選択 */}
+              <div>
+                <label className="block text-xs font-medium text-muted mb-1.5">
+                  形式
+                </label>
+                <div className="flex rounded-lg border border-border overflow-hidden">
+                  {(
+                    [
+                      { value: "N/T", label: "1/3" },
+                      { value: "(N/T)", label: "(1/3)" },
+                      { value: "N枚目/T枚", label: "1枚目/3枚" },
+                    ] as { value: CaptionFormat; label: string }[]
+                  ).map(({ value, label }) => (
+                    <button
+                      key={value}
+                      onClick={() => setCaptionFormat(value)}
+                      className={`flex-1 px-3 py-2 text-sm font-medium transition-all min-h-[44px] ${
+                        captionFormat === value
+                          ? "bg-accent text-white"
+                          : "text-muted hover:text-foreground"
+                      }`}
+                    >
+                      {label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* 個別キャプション一覧 */}
+              <ul className="space-y-2">
+                {stitched.map((_, i) => {
+                  const cap = generateCaption(
+                    i + 1,
+                    stitched.length,
+                    captionPrefix,
+                    captionFormat
+                  );
+                  return (
+                    <li
+                      key={i}
+                      className="flex items-center gap-3 bg-background border border-border rounded-lg px-3 py-2"
+                    >
+                      <span className="text-xs text-muted shrink-0 w-12">
+                        投稿{i + 1}
+                      </span>
+                      <span className="flex-1 text-sm text-foreground font-mono truncate">
+                        {cap}
+                      </span>
+                      <button
+                        onClick={async () => {
+                          await copyToClipboard(cap);
+                          setCopiedIndex(i);
+                          setTimeout(() => setCopiedIndex(null), 800);
+                        }}
+                        className="shrink-0 px-3 py-1.5 rounded-lg border border-border text-xs font-medium text-muted hover:text-foreground hover:border-accent transition-all min-h-[44px] min-w-[64px]"
+                      >
+                        {copiedIndex === i ? "✓" : "コピー"}
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+
+              {/* すべてコピー */}
+              <button
+                onClick={async () => {
+                  const all = stitched
+                    .map((_, i) =>
+                      generateCaption(
+                        i + 1,
+                        stitched.length,
+                        captionPrefix,
+                        captionFormat
+                      )
+                    )
+                    .join("\n");
+                  await copyToClipboard(all);
+                  setCopiedAll(true);
+                  setTimeout(() => setCopiedAll(false), 1000);
+                }}
+                className="w-full py-3 rounded-xl border border-border text-sm font-semibold text-foreground hover:border-accent hover:text-accent active:scale-[0.99] transition-all min-h-[44px]"
+              >
+                {copiedAll ? "✓ コピーしました" : "すべてのキャプションをコピー"}
+              </button>
+            </div>
+          )}
 
           <ul className="space-y-4">
             {stitched.map((img, i) => (
