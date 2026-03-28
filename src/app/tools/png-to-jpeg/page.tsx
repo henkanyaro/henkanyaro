@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import AdBanner from "@/components/AdBanner";
 import PngToJpegConverter from "@/components/tools/PngToJpegConverter";
-import ShareButtons from "@/components/ShareButtons";
 
 export const metadata: Metadata = {
   title: "一括JPEG変換野郎 — PNGをまとめてJPEGに変換",
@@ -82,15 +81,6 @@ export default function PngToJpegPage() {
           <p className="font-medium text-foreground mb-1">🔒 プライバシー安心</p>
           <p>すべての処理はあなたのブラウザ内で完結します。画像はサーバーに送信されません。</p>
         </div>
-      </section>
-
-      {/* シェアボタン */}
-      <section className="mt-12 text-center">
-        <p className="text-xs font-medium text-muted mb-4">このツールをシェア</p>
-        <ShareButtons
-          url="/tools/png-to-jpeg"
-          title="一括JPEG変換野郎 — PNGをまとめてJPEGに変換"
-        />
       </section>
     </div>
   );

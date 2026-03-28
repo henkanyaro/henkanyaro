@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import LanguageSwitcher from "./LanguageSwitcher";
+import ShareButtons from "./ShareButtons";
 
 export default function Header() {
   const pathname = usePathname();
@@ -16,7 +17,7 @@ export default function Header() {
         >
           {isEn ? "Henkan Yaro" : "変換野郎"}
         </Link>
-        <nav className="flex items-center gap-6">
+        <nav className="flex items-center gap-4">
           <Link
             href={isEn ? "/en#tools" : "/#tools"}
             className="text-sm text-muted hover:text-foreground transition-colors"
@@ -29,6 +30,12 @@ export default function Header() {
           >
             {isEn ? "Contact" : "お問い合わせ"}
           </Link>
+          {!isEn && (
+            <>
+              <div className="w-px h-4 bg-border" />
+              <ShareButtons compact />
+            </>
+          )}
           <LanguageSwitcher />
         </nav>
       </div>

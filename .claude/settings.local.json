@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find /c/Users/ジョーゼンハラ/henkanyaro/app -type f \\\\\\(-name *.tsx -o -name *.ts -o -name *.md \\\\\\))",
+      "Bash(git push:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npx next:*)"
+    ]
+  }
+}
