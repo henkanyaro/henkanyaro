@@ -40,6 +40,14 @@ export default function Header() {
           >
             {isEn ? "Tools" : "ツール一覧"}
           </Link>
+          {!isEn && (
+            <Link
+              href="/about"
+              className="text-sm text-muted hover:text-foreground transition-colors"
+            >
+              About
+            </Link>
+          )}
           <Link
             href="/contact"
             className="text-sm text-muted hover:text-foreground transition-colors"
@@ -85,6 +93,15 @@ export default function Header() {
             >
               {isEn ? "Tools" : "ツール一覧"}
             </Link>
+            {!isEn && (
+              <Link
+                href="/about"
+                onClick={closeMenu}
+                className="py-3 text-sm font-medium text-foreground border-b border-border"
+              >
+                About
+              </Link>
+            )}
             <Link
               href="/contact"
               onClick={closeMenu}

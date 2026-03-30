@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { tools } from "@/data/tools";
 import ToolCard from "@/components/ToolCard";
 
@@ -37,7 +38,7 @@ export default function HomePage() {
         />
 
         <div className="relative">
-          <h1 className="text-4xl sm:text-5xl font-black tracking-tight mb-4">
+          <h1 className="text-4xl sm:text-5xl font-black tracking-tight mb-3">
             <span
               style={{
                 background: "linear-gradient(90deg, #FF6B35 0%, #7C3AED 100%)",
@@ -49,10 +50,12 @@ export default function HomePage() {
               変換野郎
             </span>
           </h1>
-          <p className="text-muted text-base sm:text-lg max-w-xl mx-auto">
-            クリエーターのための、シンプルで爆速な画像ツール集。
-            <br />
-            ブラウザ完結・無料・サーバー不要。
+          <p className="text-foreground font-semibold text-base sm:text-lg mb-2">
+            クリエイターのための、ブラウザで完結する変換ツール集
+          </p>
+          <p className="text-muted text-sm sm:text-base max-w-xl mx-auto">
+            インストール不要・無料・画像はサーバーに送信されない。<br className="hidden sm:inline" />
+            漫画家・イラストレーター・デザイナーのために作られた実用ツール集です。
           </p>
         </div>
       </div>
@@ -73,6 +76,33 @@ export default function HomePage() {
           {tools.map((tool) => (
             <ToolCard key={tool.id} tool={tool} />
           ))}
+        </div>
+      </div>
+
+      {/* 変換野郎とは */}
+      <div className="mt-14">
+        <div className="flex items-center gap-3 mb-6">
+          <h2 className="text-lg font-bold text-foreground">変換野郎とは</h2>
+          <div
+            className="flex-1 h-0.5 rounded-full"
+            style={{
+              background:
+                "linear-gradient(90deg, #FF6B35 0%, #7C3AED 100%)",
+            }}
+          />
+        </div>
+        <div className="p-6 bg-surface border border-border rounded-2xl">
+          <p className="text-sm sm:text-base text-muted leading-relaxed mb-4">
+            変換野郎は、漫画家・イラストレーター・デザイナーが日々の作業でよく使う画像変換・加工をブラウザだけで手軽に行えるよう設計された無料ツール集です。アプリのインストールは一切不要で、すべての処理はブラウザ内で完結します。画像がサーバーに送られることはなく、プライバシーを守りながら安心してご利用いただけます。
+          </p>
+          <Link
+            href="/about"
+            className="inline-flex items-center gap-1.5 text-sm font-semibold hover:opacity-80 transition-opacity"
+            style={{ color: "#FF6B35" }}
+          >
+            詳しくはAboutページへ
+            <span>→</span>
+          </Link>
         </div>
       </div>
     </div>
