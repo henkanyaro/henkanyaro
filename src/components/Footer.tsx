@@ -27,30 +27,12 @@ export default function Footer() {
             <p className="text-xs text-muted mb-2">
               おすすめ <span className="border border-border rounded px-1 py-0.5 text-[10px]">PR</span>
             </p>
-            {/* 楽天ブックス アフィリエイトバナー 468×60 */}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <a
-              href="https://rpx.a8.net/svt/ejp?a8mat=4AZQGO+CWZK8I+2HOM+6Z77L&rakuten=y&a8ejpredirect=http%3A%2F%2Fhb.afl.rakuten.co.jp%2Fhsc%2F0eb47f9f.7c63de63.0eb47f9e.272ecae3%2Fa26032895294_4AZQGO_CWZK8I_2HOM_6Z77L"
-              rel="nofollow"
-              target="_blank"
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="http://hbb.afl.rakuten.co.jp/hsb/0eb47faa.ef0bb625.0eb47f9e.272ecae3/"
-                alt="楽天ブックス"
-                width={468}
-                height={60}
-                className="inline-block max-w-full"
-              />
-            </a>
-            {/* トラッキングピクセル */}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              width={1}
-              height={1}
-              src="https://www14.a8.net/0.gif?a8mat=4AZQGO+CWZK8I+2HOM+6Z77L"
-              alt=""
-              style={{ border: 0 }}
+            {/* 楽天アフィリエイト 商品ウィジェット 300×300 */}
+            <div
+              className="inline-block max-w-full overflow-x-auto"
+              dangerouslySetInnerHTML={{
+                __html: `<table border="0" cellpadding="0" cellspacing="0"><tr><td><div style="border:1px solid #95a5a6;border-radius:.75rem;background-color:#FFFFFF;width:624px;margin:0px;padding:5px;text-align:center;overflow:hidden;"><table><tr><td style="width:300px"><a href="https://hb.afl.rakuten.co.jp/ichiba/532b233c.93b25ab5.532b233e.65b2880c/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Feunicedress%2Feuni-239%2F&link_type=picttext&ut=eyJwYWdlIjoiaXRlbSIsInR5cGUiOiJwaWN0dGV4dCIsInNpemUiOiIzMDB4MzAwIiwibmFtIjoxLCJuYW1wIjoicmlnaHQiLCJjb20iOjEsImNvbXAiOiJkb3duIiwicHJpY2UiOjEsImJvciI6MSwiY29sIjoxLCJiYnRuIjoxLCJwcm9kIjowLCJhbXAiOmZhbHNlfQ%3D%3D" target="_blank" rel="nofollow sponsored noopener" style="word-wrap:break-word;"><img src="https://hbb.afl.rakuten.co.jp/hgb/532b233c.93b25ab5.532b233e.65b2880c/?me_id=1346621&item_id=10002032&pc=https%3A%2F%2Fthumbnail.image.rakuten.co.jp%2F%400_mall%2Feunicedress%2Fcabinet%2Fitem7%2Feuni-239-k.jpg%3F_ex%3D300x300&s=300x300&t=picttext" border="0" style="margin:2px" alt="[商品価格に関しましては、リンクが作成された時点と現時点で情報が変更されている場合がございます。]" title="[商品価格に関しましては、リンクが作成された時点と現時点で情報が変更されている場合がございます。]"></a></td><td style="vertical-align:top;width:308px;display: block;"><p style="font-size:12px;line-height:1.4em;text-align:left;margin:0px;padding:2px 6px;word-wrap:break-word"><a href="https://hb.afl.rakuten.co.jp/ichiba/532b233c.93b25ab5.532b233e.65b2880c/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Feunicedress%2Feuni-239%2F&link_type=picttext&ut=eyJwYWdlIjoiaXRlbSIsInR5cGUiOiJwaWN0dGV4dCIsInNpemUiOiIzMDB4MzAwIiwibmFtIjoxLCJuYW1wIjoicmlnaHQiLCJjb20iOjEsImNvbXAiOiJkb3duIiwicHJpY2UiOjEsImJvciI6MSwiY29sIjoxLCJiYnRuIjoxLCJwcm9kIjowLCJhbXAiOmZhbHNlfQ%3D%3D" target="_blank" rel="nofollow sponsored noopener" style="word-wrap:break-word;">【先着クーポンで51％OFF】割れない鏡 全身鏡 軽量 省スペース 歪みほぼ無し クリーナークロス付き フィルムミラー インテリア ホワイト ナチュラル</a><br><span>価格：10,990円～（税込、送料別)</span> <span style="color:#BBB">(2026/4/25時点)</span></p><div style="margin:15px;"><a href="https://hb.afl.rakuten.co.jp/ichiba/532b233c.93b25ab5.532b233e.65b2880c/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Feunicedress%2Feuni-239%2F&link_type=picttext&ut=eyJwYWdlIjoiaXRlbSIsInR5cGUiOiJwaWN0dGV4dCIsInNpemUiOiIzMDB4MzAwIiwibmFtIjoxLCJuYW1wIjoicmlnaHQiLCJjb20iOjEsImNvbXAiOiJkb3duIiwicHJpY2UiOjEsImJvciI6MSwiY29sIjoxLCJiYnRuIjoxLCJwcm9kIjowLCJhbXAiOmZhbHNlfQ%3D%3D" target="_blank" rel="nofollow sponsored noopener" style="word-wrap:break-word;"><img src="https://static.affiliate.rakuten.co.jp/makelink/rl.svg" style="float:left;max-height:27px;width:auto;margin-top:5px"></a><a href="https://hb.afl.rakuten.co.jp/ichiba/532b233c.93b25ab5.532b233e.65b2880c/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Feunicedress%2Feuni-239%2F%3Fscid%3Daf_pc_bbtn&link_type=picttext&ut=eyJwYWdlIjoiaXRlbSIsInR5cGUiOiJwaWN0dGV4dCIsInNpemUiOiIzMDB4MzAwIiwibmFtIjoxLCJuYW1wIjoicmlnaHQiLCJjb20iOjEsImNvbXAiOiJkb3duIiwicHJpY2UiOjEsImJvciI6MSwiY29sIjoxLCJiYnRuIjoxLCJwcm9kIjowLCJhbXAiOmZhbHNlfQ==" target="_blank" rel="nofollow sponsored noopener" style="word-wrap:break-word;"><div style="float:right;width:50%;height:32px;background-color:#bf0000;color:#fff!important;font-size:14px;font-weight:500;line-height:32px;margin-left:1px;padding:0 12px;border-radius:16px;cursor:pointer;text-align:center;">楽天で購入</div></a></div></td></tr></table></div><br><p style="color:#000000;font-size:12px;line-height:1.4em;margin:5px;word-wrap:break-word"></p></td></tr></table>`,
+              }}
             />
           </div>
         )}
