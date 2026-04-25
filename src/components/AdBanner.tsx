@@ -3,14 +3,19 @@ interface AdBannerProps {
   className?: string;
 }
 
+// AdSense 審査通過後に有効化する
+// const ADSENSE_CLIENT = "ca-pub-XXXXXXXX";
+const ADSENSE_ENABLED = false;
+
 export default function AdBanner({ slot, className = "" }: AdBannerProps) {
+  if (!ADSENSE_ENABLED) return null;
+
   return (
     <div
-      className={`w-full bg-gray-50 border border-dashed border-border rounded-lg flex items-center justify-center text-xs text-muted min-h-[90px] ${className}`}
+      className={`w-full ${className}`}
       data-ad-slot={slot}
     >
-      {/* Google AdSense: data-ad-client="ca-pub-XXXXXXXX" data-ad-slot={slot} を設定 */}
-      <span>広告</span>
+      {/* Google AdSense: data-ad-client={ADSENSE_CLIENT} data-ad-slot={slot} */}
     </div>
   );
 }

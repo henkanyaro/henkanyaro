@@ -22,14 +22,38 @@ export default function Footer() {
             <ShareButtons />
           </div>
         )}
-        <div className="mb-6 p-4 rounded-lg border border-dashed border-border text-center text-sm text-muted">
-          <p className="font-medium text-muted">
-            {isEn ? "Recommended Design Tools" : "おすすめデザインツール"}
-          </p>
-          <p className="text-xs mt-1 text-border">
-            {isEn ? "Affiliate link area" : "アフィリエイトリンクエリア"}
-          </p>
-        </div>
+        {!isEn && (
+          <div className="mb-6 text-center">
+            <p className="text-xs text-muted mb-2">
+              おすすめ <span className="border border-border rounded px-1 py-0.5 text-[10px]">PR</span>
+            </p>
+            {/* 楽天ブックス アフィリエイトバナー 468×60 */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <a
+              href="https://rpx.a8.net/svt/ejp?a8mat=4AZQGO+CWZK8I+2HOM+6Z77L&rakuten=y&a8ejpredirect=http%3A%2F%2Fhb.afl.rakuten.co.jp%2Fhsc%2F0eb47f9f.7c63de63.0eb47f9e.272ecae3%2Fa26032895294_4AZQGO_CWZK8I_2HOM_6Z77L"
+              rel="nofollow"
+              target="_blank"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="http://hbb.afl.rakuten.co.jp/hsb/0eb47faa.ef0bb625.0eb47f9e.272ecae3/"
+                alt="楽天ブックス"
+                width={468}
+                height={60}
+                className="inline-block max-w-full"
+              />
+            </a>
+            {/* トラッキングピクセル */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              width={1}
+              height={1}
+              src="https://www14.a8.net/0.gif?a8mat=4AZQGO+CWZK8I+2HOM+6Z77L"
+              alt=""
+              style={{ border: 0 }}
+            />
+          </div>
+        )}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted">
           <p>© {new Date().getFullYear()} {isEn ? "Henkan Yaro" : "変換野郎"}</p>
           <div className="flex gap-4">
