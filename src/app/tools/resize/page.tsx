@@ -74,7 +74,7 @@ export default function StitchPage() {
       <StitchConverter />
 
       {/* 結合後広告 */}
-      <AdBanner slot="stitch-post" className="mt-10" />
+      <AdBanner slot="stitch-post" className="mt-10" placeholder />
 
       {/* 使い方説明 */}
       <section className="mt-12 space-y-4">

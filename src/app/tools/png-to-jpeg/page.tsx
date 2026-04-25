@@ -80,7 +80,7 @@ export default function PngToJpegPage() {
       <PngToJpegConverter />
 
       {/* 変換完了後広告 */}
-      <AdBanner slot="post-convert" className="mt-10" />
+      <AdBanner slot="post-convert" className="mt-10" placeholder />
 
       {/* 使い方説明 */}
       <section className="mt-12 space-y-4">
